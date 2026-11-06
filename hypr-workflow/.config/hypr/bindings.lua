@@ -49,5 +49,8 @@ o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")
 hl.unbind("SUPER + SHIFT + C")
 o.bind("SUPER + SHIFT + C", "Google Calendar", { webapp = "https://calendar.google.com" })
 
+-- Rebind SUPER+SHIFT+A from the ChatGPT webapp to the default coding agent
+o.rebind("SUPER + SHIFT + A", "Agent", "omarchy-agent --pick")
+
 -- Mute on the keyboard home row, for keyboards without media keys.
 o.bind("SUPER + CTRL + M", "Mute", "omarchy-audio-output-volume mute-toggle", { locked = true })
