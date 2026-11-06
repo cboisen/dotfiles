@@ -1,18 +1,8 @@
 #!/usr/bin/env bash
-# Make closing the laptop lid suspend-then-hibernate instead of plain suspend.
-#
-# The config lives in /etc, outside Stow's reach (and logind runs with
-# ProtectHome=yes, so it can't follow a symlink into $HOME anyway), so this
-# copies the files from system/lid-suspend-then-hibernate/ into place and
-# reloads logind. sudo is only needed when something actually changes.
-#
-# If hibernation isn't set up, it offers to run `omarchy hibernation setup`.
-# Declined or unsupported: the lid keeps plain suspend, and any copy of these
-# files left from before is removed, since logind can't act on
-# suspend-then-hibernate without hibernation and would leave a closed laptop
-# awake.
-#
-# Safe to run more than once. `--uninstall` removes the files again.
+# Copy the lid config into /etc (logind can't read it through a stow symlink in
+# ~) and reload logind. Offers to set up hibernation if it's missing; without
+# it, the config is removed, as logind can't suspend-then-hibernate.
+# `--uninstall` removes the config.
 set -euo pipefail
 
 repo=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)

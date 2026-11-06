@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
-# Install everything in this repo: stow each package into ~, then run the
-# scripts in setup/ for the parts Stow can't do (edits to files Omarchy also
-# writes, and config in /etc that is copied into place with sudo).
-#
-# The repo always wins: a file in ~ that is in the way of a package (Omarchy's
-# own bindings.lua, or a link hyprmon turned back into a file) is moved aside
-# to <file>.bak.<timestamp> first, and listed at the end so you can diff it.
-#
-# Safe to run more than once: packages are restowed and every setup script is
-# idempotent. Stops at the first failure.
+# Stow every package, then run the setup/ scripts. Files in ~ that block a
+# package are moved to <file>.bak.<timestamp>. Safe to rerun.
 set -euo pipefail
 shopt -s nullglob
 
@@ -28,8 +20,7 @@ for dir in */; do
   packages+=("$dir")
 done
 
-# Paths (relative to ~) that would stop Stow: real files, and links Stow
-# doesn't own. A dry run lists them; it exits non-zero when there are any.
+# Paths (relative to ~) a dry run reports as conflicts.
 conflicts() {
   { stow --no --restow "$1" 2>&1 || true; } | sed -n \
     -e 's/^  \* cannot stow .* over existing target \(.*\) since neither a link nor a directory.*$/\1/p' \
@@ -57,7 +48,7 @@ done
 
 if (( ${#backups[@]} )); then
   echo
-  echo "Moved aside to make room for the repo's version (compare, then delete):"
+  echo "Backed up (diff, then delete):"
   printf '  %s\n' "${backups[@]}"
 fi
 
