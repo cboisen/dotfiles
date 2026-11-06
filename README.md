@@ -12,6 +12,8 @@ cd ~/Code/dotfiles
 
 stow omarchy-global-workspaces
 ./setup/omarchy-global-workspaces.sh
+
+stow hypr-workflow
 ```
 
 Run `stow` from the repo root so it picks up `.stowrc`. If a file already
