@@ -1,7 +1,9 @@
 # dotfiles
 
 Managed with [GNU Stow](https://www.gnu.org/software/stow/). Each top-level
-folder except `setup/` is a package.
+folder except `setup/` and `system/` is a package.
+
+`system/` holds `/etc` config, which the setup scripts copy into place.
 
 ## New machine
 
@@ -9,12 +11,7 @@ folder except `setup/` is a package.
 omarchy pkg add stow
 git clone https://github.com/cboisen/dotfiles.git ~/Code/dotfiles
 cd ~/Code/dotfiles
-
-stow omarchy-global-workspaces
-./setup/omarchy-global-workspaces.sh
-
-stow hypr-workflow
+./install.sh
 ```
 
-Run `stow` from the repo root so it picks up `.stowrc`. If a file already
-exists, `stow --adopt <package>` pulls it into the repo; check `git diff`.
+`install.sh` stows every package, then runs each script in `setup/`.
